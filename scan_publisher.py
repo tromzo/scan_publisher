@@ -43,7 +43,7 @@ def upload_results(args):
     if resp_text == b'Done':
         logger.info('Upload success')
     else:
-        logger.info('Upload failed')
+        logger.info('Upload failed, details: %s' % resp_text)
 
 
 def main():
