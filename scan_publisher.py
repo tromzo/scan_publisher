@@ -10,7 +10,8 @@ import logging
 logger = logging.getLogger('')
 logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
-ENDPOINT_URL = 'https://app.tromzo.com/webhook/%s/'
+ENDPOINT_HOST = 'app.tromzo.com'
+ENDPOINT_URL = 'https://%s/webhook/%s/'
 
 ALLOWED_SCANNERS = {
     'gitleaks',
@@ -30,7 +31,9 @@ def upload_results(args):
         'token': args.token,
         'organization_name': args.org_name,
     }
-    url = ENDPOINT_URL % args.scanner
+    endpoint_host = args.endpoint or ENDPOINT_HOST
+
+    url = ENDPOINT_URL % (endpoint_host, args.scanner)
 
     data = json.dumps(data).encode()
     req = request.Request(url, data=data)
@@ -68,6 +71,10 @@ def main():
     parser.add_argument(
         '-s', '--scanner', action='store', dest='scanner',
         help='scanner name, eg. gitleaks', required=True,
+    )
+    parser.add_argument(
+        '-e', '--endpoint', action='store', dest='endpoint',
+        help='endpoint host, eg. app.tromzo.com', required=False,
     )
     args = parser.parse_args(sys.argv[1:])
     if args.scanner not in ALLOWED_SCANNERS:
