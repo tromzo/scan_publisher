@@ -40,7 +40,7 @@ def upload_results(args):
     resp = request.urlopen(req)  # nosec
     resp_text = resp.read()
 
-    if resp_text == b'Done':
+    if resp_text == b'None':
         logger.info('Upload success')
     else:
         logger.info('Upload failed, details: %s' % resp_text)
