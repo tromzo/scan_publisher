@@ -26,11 +26,12 @@ def upload_results(args):
     data = {
         'findings': data,
         'repo_name': args.repo_name,
-        'pull_request_url':
-            f'https://github.com/{args.repo_name}/pull/{args.pull_request}',
         'token': args.token,
         'organization_name': args.org_name,
     }
+    if args.pull_request:
+        data['pull_request_url'] = f'https://github.com/{args.repo_name}/pull/{args.pull_request}'
+        
     endpoint_host = args.endpoint or ENDPOINT_HOST
 
     url = ENDPOINT_URL % (endpoint_host, args.scanner)
@@ -54,7 +55,7 @@ def main():
     )
     parser.add_argument(
         '-p', '--pull_request', action='store', dest='pull_request',
-        help='pull request number, eg. 42', required=True,
+        help='pull request number, eg. 42', required=False,
     )
     parser.add_argument(
         '-o', '--organization', action='store', dest='org_name',
