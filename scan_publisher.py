@@ -16,6 +16,7 @@ ENDPOINT_URL = 'https://%s/webhook/%s/'
 ALLOWED_SCANNERS = {
     'gitleaks',
     'semgrep',
+    'nessuscustom',
 }
 
 
@@ -35,6 +36,8 @@ def upload_results(args):
     endpoint_host = args.endpoint or ENDPOINT_HOST
 
     url = ENDPOINT_URL % (endpoint_host, args.scanner)
+    if 'tr.local' in endpoint_host:
+        url = url.replace('https://', 'http://')
 
     data = json.dumps(data).encode()
     req = request.Request(url, data=data)
@@ -51,7 +54,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument(
         '-r', '--repository', action='store', dest='repo_name',
-        help='repository name, eg. MyCompany/repo1', required=True,
+        help='repository name, eg. MyCompany/repo1', required=False,
     )
     parser.add_argument(
         '-p', '--pull_request', action='store', dest='pull_request',
