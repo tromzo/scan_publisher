@@ -33,6 +33,9 @@ def upload_results(args):
     if args.pull_request:
         pull_request_number = int(args.pull_request)
         data['pull_request_url'] = f'https://github.com/{args.repo_name}/pull/{pull_request_number}'
+
+    if args.commit:
+        data['commit'] = args.commit
         
     endpoint_host = args.endpoint or ENDPOINT_HOST
 
@@ -60,6 +63,10 @@ def main():
     parser.add_argument(
         '-p', '--pull_request', action='store', dest='pull_request',
         help='pull request number, eg. 42', required=False,
+    )
+    parser.add_argument(
+        '-c', '--commit', action='store', dest='commit',
+        help='pull request commit hasth, eg af9926c88e0c310c', required=False,
     )
     parser.add_argument(
         '-o', '--organization', action='store', dest='org_name',
