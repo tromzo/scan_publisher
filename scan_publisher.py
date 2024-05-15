@@ -31,7 +31,8 @@ def upload_results(args):
         'organization_name': args.org_name,
     }
     if args.pull_request:
-        data['pull_request_url'] = f'https://github.com/{args.repo_name}/pull/{args.pull_request}'
+        pull_request_number = int(args.pull_request)
+        data['pull_request_url'] = f'https://github.com/{args.repo_name}/pull/{pull_request_number}'
         
     endpoint_host = args.endpoint or ENDPOINT_HOST
 
